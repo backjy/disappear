@@ -89,12 +89,12 @@
 
 -(void) step: (ccTime) dt
 {
-	CCLOG(@"[Action step]. override me");
+//	CCLOG(@"[Action step]. override me");
 }
 
 -(void) update: (ccTime) time
 {
-	CCLOG(@"[Action update]. override me");
+//	CCLOG(@"[Action update]. override me");
 }
 @end
 

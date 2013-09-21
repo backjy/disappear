@@ -19,24 +19,24 @@
 -(NSUInteger)supportedInterfaceOrientations {
 	
 	// iPhone only
-	if( [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone )
-		return UIInterfaceOrientationMaskLandscape;
-	
+//	if( [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone )
+//		return UIInterfaceOrientationMaskLandscape;
+//	
 	// iPad only
-	return UIInterfaceOrientationMaskLandscape;
+	return NO;//UIInterfaceOrientationMaskLandscape;
 }
 
 // Supported orientations. Customize it for your own needs
 // Only valid on iOS 4 / 5. NOT VALID for iOS 6.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	// iPhone only
-	if( [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone )
-		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-	
+//	// iPhone only
+//	if( [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone )
+//		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+//	
 	// iPad only
 	// iPhone only
-	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+	return NO;//UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 
 // This is needed for iOS4 and iOS5 in order to ensure

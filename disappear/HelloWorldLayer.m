@@ -13,6 +13,11 @@
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
 
+#include "DrawSprite.h"
+
+#include "DataHandle.h"
+
+
 #pragma mark - HelloWorldLayer
 
 // HelloWorldLayer implementation
@@ -41,91 +46,79 @@
 	// Apple recommends to re-assign "self" with the "super's" return value
 	if( (self=[super init]) ) {
 		
-		// create and initialize a Label
-		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Hello World" fontName:@"Marker Felt" fontSize:64];
-
-		// ask director for the window size
-		CGSize size = [[CCDirector sharedDirector] winSize];
-	
-		// position the label on the center of the screen
-		label.position =  ccp( size.width /2 , size.height/2 );
-		
-		// add the label as a child to this Layer
-		[self addChild: label];
-		
-		
-		
-		//
-		// Leaderboards and Achievements
-		//
-		
-		// Default font size will be 28 points.
-		[CCMenuItemFont setFontSize:28];
-		
-		// Achievement Menu Item using blocks
-		CCMenuItem *itemAchievement = [CCMenuItemFont itemWithString:@"Achievements" block:^(id sender) {
-			
-			
-			GKAchievementViewController *achievementViewController = [[GKAchievementViewController alloc] init];
-			achievementViewController.achievementDelegate = self;
-			
-			AppController *app = (AppController*) [[UIApplication sharedApplication] delegate];
-			
-			[[app navController] presentModalViewController:achievementViewController animated:YES];
-			
-			[achievementViewController release];
-		}
-									   ];
-
-		// Leaderboard Menu Item using blocks
-		CCMenuItem *itemLeaderboard = [CCMenuItemFont itemWithString:@"Leaderboard" block:^(id sender) {
-			
-			
-			GKLeaderboardViewController *leaderboardViewController = [[GKLeaderboardViewController alloc] init];
-			leaderboardViewController.leaderboardDelegate = self;
-			
-			AppController *app = (AppController*) [[UIApplication sharedApplication] delegate];
-			
-			[[app navController] presentModalViewController:leaderboardViewController animated:YES];
-			
-			[leaderboardViewController release];
-		}
-									   ];
-		
-		CCMenu *menu = [CCMenu menuWithItems:itemAchievement, itemLeaderboard, nil];
-		
-		[menu alignItemsHorizontallyWithPadding:20];
-		[menu setPosition:ccp( size.width/2, size.height/2 - 50)];
-		
-		// Add the menu to the layer
-		[self addChild:menu];
-
-	}
+//        CGSize size = [CCDirector sharedDirector].winSize;
+////
+//        CCSprite * sprite = [CCSprite spriteWithFile:@"Icon.png"];
+//        [sprite setPosition:ccp(size.width/2, size.height/2)];
+//        
+//        [self addChild:sprite];
+        
+//        CCMenuItemFont * fount = [CCMenuItemFont itemWithString:@"Jump Action"];
+//        [fount setBlock:^(id sender) {
+//            CCJumpTo * jump = [CCJumpTo actionWithDuration:0.4 position:sprite.position height:15 jumps:2];
+//            sprite.scale = 1;
+//            CCScaleBy * scaleBy = [CCScaleBy actionWithDuration:0.2 scale:2];
+//            
+//            [sprite runAction:scaleBy];
+//            [sprite randpos];
+//        }];
+        
+//        CCMenu * menu = [CCMenu menuWithItems:fount, nil];
+//        [menu setPosition:ccp(100, 100)];
+//        [self addChild:menu];
+        
+    }
 	return self;
+}
+
+-(void)onEnter{
+    [super onEnter];
+    
+    [self setTouchMode:kCCTouchesOneByOne];
+    [self setTouchEnabled:YES];
+}
+
+-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event{
+    
+    CGPoint touchLocation = [touch locationInView: [touch view]];
+	touchLocation = [[CCDirector sharedDirector] convertToGL: touchLocation];
+    
+    CGPoint local = [m_data convertToNodeSpace:touchLocation];
+    
+    if (m_data) {
+        return [m_data touchBegine:local];
+    }
+    return NO;
+}
+
+-(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event{
+    
+    CGPoint touchLocation = [touch locationInView: [touch view]];
+	touchLocation = [[CCDirector sharedDirector] convertToGL: touchLocation];
+    
+    CGPoint local = [m_data convertToNodeSpace:touchLocation];
+    
+    if (m_data) {
+        [m_data touchMove:local];
+    }
+}
+
+-(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event{
+    [m_data touchEnd];
+}
+
+-(void) ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event{
+    [m_data touchEnd];
+}
+
+-(void)draw{
 }
 
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc
 {
-	// in case you have something to dealloc, do it in this method
-	// in this particular example nothing needs to be released.
-	// cocos2d will automatically release all the children (Label)
-	
-	// don't forget to call "super dealloc"
 	[super dealloc];
 }
 
-#pragma mark GameKit delegate
 
--(void) achievementViewControllerDidFinish:(GKAchievementViewController *)viewController
-{
-	AppController *app = (AppController*) [[UIApplication sharedApplication] delegate];
-	[[app navController] dismissModalViewControllerAnimated:YES];
-}
-
--(void) leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController
-{
-	AppController *app = (AppController*) [[UIApplication sharedApplication] delegate];
-	[[app navController] dismissModalViewControllerAnimated:YES];
-}
 @end

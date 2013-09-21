@@ -7,14 +7,16 @@
 //
 
 
-#import <GameKit/GameKit.h>
+
 
 // When you import this file, you import all the cocos2d classes
 #import "cocos2d.h"
 
+@class DataHandle;
 // HelloWorldLayer
-@interface HelloWorldLayer : CCLayer <GKAchievementViewControllerDelegate, GKLeaderboardViewControllerDelegate>
+@interface HelloWorldLayer : CCLayer 
 {
+    DataHandle *m_data;
 }
 
 // returns a CCScene that contains the HelloWorldLayer as the only child
